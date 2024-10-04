@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>deviceorientation sample</title>
+    </head>
+    <body>
+        <div id="output">waiting...</div>
+        <button id="requestPermission">Request Permission</button>
+
+        <script>
+            document
+                .querySelector("#requestPermission")
+                .addEventListener("click", () => {
+                    DeviceOrientationEvent.requestPermission();
+                });
+        </script>
+        <script>
+            window.addEventListener("deviceorientation", function (event) {
+                let alpha = event.alpha; // 北から時計回りの角度（0 - 360度）
+                let beta = event.beta; // 前後の傾き（-180 - 180度）
+                let gamma = event.gamma; // 左右の傾き（-90 - 90度）
+
+                if (alpha !== null) {
+                    // alphaを利用して向いている方角を計算
+                    let direction;
+                    if (alpha >= 45 && alpha < 135) {
+                        direction = "東";
+                    } else if (alpha >= 135 && alpha < 225) {
+                        direction = "南";
+                    } else if (alpha >= 225 && alpha < 315) {
+                        direction = "西";
+                    } else {
+                        direction = "北";
+                    }
+
+                    const alphaDisplay = alpha.toFixed(2);
+                    const betaDisplay = beta.toFixed(2);
+                    const gammaDisplay = gamma.toFixed(2);
+                    const result =
+                        `現在の向き: ${direction}<br />` +
+                        `\nalpha: ${alphaDisplay}<br />` +
+                        `\nbeta: ${betaDisplay}<br />` +
+                        `\ngamma: ${gammaDisplay}`;
+                    document.getElementById("output").innerHTML = result;
+                }
+            });
+        </script>
+    </body>
+</html>
